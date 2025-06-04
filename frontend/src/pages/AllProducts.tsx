@@ -16,10 +16,13 @@ const AllProducts: React.FC = () => {
   }
 
   return (
-    <div className="flex flex-col justify-center items-center w-full pt-4">
-      <h1 className="text-3xl text-center">ALL PRODUCTS</h1>
-      <div className="grid grid-cols-2 gap-4 mt-4">
-        {data?.products.map(product => <ProductCard key={product.id} product={product} />)}
+    <div className="w-full flex flex-col items-center pt-4 px-4">
+      <h1 className="text-3xl font-semibold text-center mb-6 text-blue-700">ALL PRODUCTS</h1>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 justify-items-center">
+        {data?.products.map(product => (
+          <ProductCard key={product.id} product={product} />
+        ))}
       </div>
     </div>
   )
