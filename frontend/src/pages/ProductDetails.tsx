@@ -18,13 +18,8 @@ const ProductDetails: React.FC = () => {
     variables: { id: productId as string },
   })
 
-  if (loading) {
-    return <Loading />
-  } else if (error) {
-    return <LoadingError errorMessage="Error fetching product" />
-  } else if (!data?.product) {
-    return <LoadingError errorMessage="Product not found" />
-  }
+  if (loading) return <Loading />
+  if (error || !data?.product) return <LoadingError errorMessage="Product not found" />
 
   const { product } = data
 
@@ -36,17 +31,19 @@ const ProductDetails: React.FC = () => {
       {isRentDialogOpen && (
         <RentProductDialog isOpen={isRentDialogOpen} setIsOpen={setIsRentDialogOpen} product={product} />
       )}
-      <div className="flex flex-col items-center justify-center w-full">
-        <div className="flex flex-col gap-y-2 max-w-[520px] mt-4">
-          <h2 className="text-slate-800 text-xl">{product.title}</h2>
-          <span className="text-slate-500 text-sm">{`Categories: ${product.categories.map(category => category.name).join(', ')}`}</span>
-          <span className="text-slate-500 text-sm">{`Price: $${product.price}`}</span>
-          <span className="text-slate-500 text-xs">{`Description: ${product.description}`}</span>
-          <span className="text-slate-500 text-sm">{`Date Posted: ${formatDateWithOrdinal(new Date(Number(product.createdAt)))}`}</span>
-        </div>
-        <div className="flex gap-x-4 mt-4">
-          <PrimaryActionButton label="Buy" onClick={() => setIsBuyDialogOpen(true)} />
-          <PrimaryActionButton label="Rent" onClick={() => setIsRentDialogOpen(true)} />
+      <div className="w-full flex justify-center mt-10 px-4">
+        <div className="w-full max-w-md bg-blue-50 border border-blue-300 rounded-lg shadow p-6">
+          <h2 className="text-xl font-semibold text-center text-blue-900 mb-4">{product.title}</h2>
+          <div className="text-sm text-blue-800 space-y-2">
+            <p><strong>Categories:</strong> {product.categories.map(c => c.name).join(', ')}</p>
+            <p><strong>Price:</strong> ${product.price}</p>
+            <p><strong>Description:</strong> {product.description}</p>
+            <p><strong>Date Posted:</strong> {formatDateWithOrdinal(new Date(Number(product.createdAt)))}</p>
+          </div>
+          <div className="flex justify-center gap-x-4 mt-6">
+            <PrimaryActionButton label="Buy" onClick={() => setIsBuyDialogOpen(true)} />
+            <PrimaryActionButton label="Rent" onClick={() => setIsRentDialogOpen(true)} />
+          </div>
         </div>
       </div>
     </>

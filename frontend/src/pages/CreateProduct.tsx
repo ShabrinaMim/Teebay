@@ -31,6 +31,12 @@ const CreateProduct: React.FC = () => {
     }
   }, [error])
 
+  useEffect(() => {
+    if (!localStorage.getItem('token')) {
+      navigate('/signin')
+    }
+  }, [])
+
   if (categoriesFetchError || !categoriesData) {
     return <LoadingError errorMessage="Error fetching categories" />
   }

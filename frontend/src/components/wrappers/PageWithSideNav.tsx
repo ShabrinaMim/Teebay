@@ -6,6 +6,7 @@ import PrimaryActionButton from '../shared/PrimaryActionButton'
 
 const Sidenav: React.FC = () => {
   const navigate = useNavigate()
+  const isSignedIn = !!localStorage.getItem('token')
 
   const handleSignOut = () => {
     updateAuthToken(null)
@@ -31,13 +32,16 @@ const Sidenav: React.FC = () => {
               />
             ))}
           </div>
-          <div className="sticky bottom-0 backdrop-blur-sm w-full">
-            <PrimaryActionButton
-              className="w-full bg-blue-100 hover:bg-blue-200 shadow-sm rounded-md text-blue-700"
-              label="Sign Out"
-              onClick={handleSignOut}
-            />
-          </div>
+
+          {isSignedIn && (
+            <div className="sticky bottom-0 backdrop-blur-sm w-full">
+              <PrimaryActionButton
+                className="w-full bg-blue-100 hover:bg-blue-200 shadow-sm rounded-md text-blue-700"
+                label="Sign Out"
+                onClick={handleSignOut}
+              />
+            </div>
+          )}
         </div>
       </div>
     </div>
