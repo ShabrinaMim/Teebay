@@ -1,1 +1,2 @@
 # Teebay
+Teebay is a full-stack web application built with React, Apollo Client, Express.js, GraphQL, Prisma, and PostgreSQL. It enables users to easily buy, sell, or rent products across various categories, including electronics, furniture, home appliances, and more.
