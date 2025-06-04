@@ -88,11 +88,6 @@ export class TransactionRepository extends Repository {
             },
           })
 
-          await prisma.product.update({
-            where: { id: productId },
-            data: { isAvailable: false },
-          })
-
           return newTransaction
         }
       )

@@ -1,14 +1,21 @@
 import { GraphQLError } from 'graphql'
 import { TransactionRepository } from '../../database/TransactionRepository'
+import { ProductRepository } from '../../database/ProductRepository'
 import { DataLoaders } from '../../providers/DataLoaders'
 import { Service } from '../Service'
 
 export class BuyProductService extends Service {
-  transactionRepository: TransactionRepository
+  private transactionRepository: TransactionRepository
+  private productRepository: ProductRepository
 
-  constructor(private buyerId: string, private productId: string, private loaders: DataLoaders) {
+  constructor(
+    private buyerId: string,
+    private productId: string,
+    private loaders: DataLoaders
+  ) {
     super()
     this.transactionRepository = new TransactionRepository()
+    this.productRepository = new ProductRepository()
   }
 
   async execute() {
@@ -32,11 +39,19 @@ export class BuyProductService extends Service {
       })
     }
 
-    return await this.transactionRepository.createTransaction({
+    const transaction = await this.transactionRepository.createTransaction({
       buyerId: this.buyerId,
       sellerId: product.ownerId,
       productId: this.productId,
       price: product.price,
     })
+
+    // Mark product as unavailable
+    await this.productRepository.updateProductAvailability(this.productId, false)
+
+    // Clear cached product
+    await this.loaders.productLoader.loadProductsById.clear(this.productId)
+
+    return transaction
   }
 }

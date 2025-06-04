@@ -35,7 +35,7 @@ model Product {
   isRentable   Boolean       @default(false)
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
-  transactions Transaction[]
+  transaction  Transaction?  
   rentals      Rental[]
 }
 
@@ -47,7 +47,7 @@ model Category {
 model Transaction {
   id        String   @id @default(uuid())
   product   Product  @relation(fields: [productId], references: [id])
-  productId String
+  productId String   @unique
   buyer     User     @relation("Buyer", fields: [buyerId], references: [id])
   buyerId   String
   seller    User     @relation("Seller", fields: [sellerId], references: [id])

@@ -13,7 +13,7 @@ export class ProductRepository extends Repository {
           owner: true,
           categories: true,
           rentals: true,
-          transactions: true,
+          transaction: true,
         },
       })
     } catch (error) {
@@ -31,7 +31,7 @@ export class ProductRepository extends Repository {
           owner: true,
           categories: true,
           rentals: true,
-          transactions: true,
+          transaction: true,
         },
       })
     } catch (error) {
@@ -49,7 +49,7 @@ export class ProductRepository extends Repository {
           owner: true,
           categories: true,
           rentals: true,
-          transactions: true,
+          transaction: true,
         },
       })
     } catch (error) {
@@ -73,7 +73,7 @@ export class ProductRepository extends Repository {
           owner: true,
           categories: true,
           rentals: true,
-          transactions: true,
+          transaction: true,
         },
       })
     } catch (error) {
@@ -128,6 +128,22 @@ export class ProductRepository extends Repository {
       })
     }
   }
+
+  async updateProductAvailability(productId: string, isAvailable: boolean) {
+  try {
+    return await this.prismaClient.product.update({
+      where: { id: productId },
+      data: { isAvailable },
+    })
+  } catch (error) {
+    throw new GraphQLError('Failed to update product availability', {
+      extensions: {
+        code: 'DATABASE_ERROR',
+        error: (error as Error).message,
+      },
+    })
+  }
+}
 
   async updateProductCategories(productId: string, categories: string[]) {
     try {
