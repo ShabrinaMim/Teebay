@@ -1,0 +1,106 @@
+type User {
+  id: ID!
+  email: String!
+  firstName: String!
+  lastName: String!
+  address: String!
+  phone: String!
+  products: [Product!]!
+  boughtProducts: [Transaction!]!
+  soldProducts: [Transaction!]!
+  rentedProducts: [Rental!]!
+  lentProducts: [Rental!]!
+}
+
+type Product {
+  id: ID!
+  title: String!
+  description: String!
+  price: Float!
+  rentPrice: Float
+  categories: [Category!]!
+  owner: User!
+  isAvailable: Boolean!
+  isRentable: Boolean!
+  createdAt: String!
+  updatedAt: String!
+}
+
+type Category {
+  name: String!
+  products: [Product!]!
+}
+
+type Transaction {
+  id: ID!
+  product: Product!
+  buyer: User!
+  seller: User!
+  price: Float!
+  createdAt: String!
+}
+
+type Rental {
+  id: ID!
+  product: Product!
+  renter: User!
+  owner: User!
+  startDate: String!
+  endDate: String!
+  price: Float!
+  createdAt: String!
+}
+
+type Query {
+  users: [User!]!
+  user(id: ID!): User
+  me: User
+  products: [Product!]!
+  product(id: ID!): Product
+  categories: [Category!]!
+  productsByOwner: [Product!]!
+  rentalsByOwner: [Rental!]!
+  rentalsByRenter: [Rental!]!
+  rentalsByProduct(productId: ID!): [Rental!]!
+  transactionsBySeller: [Transaction!]!
+  transactionsByBuyer: [Transaction!]!
+}
+
+type Mutation {
+  signup(
+    email: String!
+    password: String!
+    firstName: String!
+    lastName: String!
+    address: String!
+    phone: String!
+  ): User!
+  signin(email: String!, password: String!): AuthPayload!
+
+  createProduct(
+    title: String!
+    description: String!
+    price: Float!
+    rentPrice: Float
+    isRentable: Boolean!
+    categories: [String!]!
+  ): Product!
+  updateProduct(
+    id: ID!
+    title: String
+    description: String
+    price: Float
+    rentPrice: Float
+    isRentable: Boolean
+    categories: [String!]
+  ): Product!
+  deleteProduct(id: ID!): Boolean!
+
+  buyProduct(productId: ID!): Transaction!
+  rentProduct(productId: ID!, startDate: String!, endDate: String!): Rental!
+}
+
+type AuthPayload {
+  token: String!
+  user: User!
+}

@@ -1,12 +1,43 @@
 {
   "name": "backend",
-  "version": "1.0.0",
+  "description": "Teebay is a full-stack web application built with React, Apollo Client, Express.js, GraphQL, Prisma, and PostgreSQL. It enables users to easily buy, sell, or rent products across various categories, including electronics, furniture, home appliances, and more.",
+  "author": "Shabrina Mim",
+  "version": "0.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc -p ./",
+    "dev": "ts-node-dev --respawn -- src/app.ts",
+    "start": "npx prisma migrate deploy && npx prisma generate && pm2-runtime start ecosystem.config.js",
+    "test": "jest --coverage"
   },
   "keywords": [],
-  "author": "",
   "license": "ISC",
-  "description": ""
+  "dependencies": {
+    "@apollo/server": "^4.11.3",
+    "@prisma/client": "^6.3.1",
+    "bcryptjs": "^3.0.1",
+    "body-parser": "^1.20.3",
+    "cors": "^2.8.5",
+    "cron": "^3.5.0",
+    "dataloader": "^2.2.3",
+    "date-fns": "^4.1.0",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "graphql": "^16.10.0",
+    "jsonwebtoken": "^9.0.2",
+    "lodash": "^4.17.21",
+    "prisma": "^6.3.1",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
+    "@types/graphql": "^14.2.3",
+    "@types/jsonwebtoken": "^9.0.8",
+    "@types/lodash": "^4.17.15",
+    "@types/node": "^22.13.4",
+    "ts-node": "^10.9.2",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.7.3"
+  }
 }
