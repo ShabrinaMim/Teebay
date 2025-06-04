@@ -30,7 +30,6 @@ export default function PasswordInputField(props: PasswordInputFieldProps) {
 
     if (props.validationSchema) {
       const result = props.validationSchema.safeParse(text)
-
       if (!result.success) {
         setErrorMessage(result.error.errors[0]?.message)
       } else {
@@ -42,7 +41,17 @@ export default function PasswordInputField(props: PasswordInputFieldProps) {
   return (
     <div className="flex w-full flex-col items-stretch gap-y-1">
       <InputFieldLabel htmlFor={'#' + inputTag} className="ml-5" label={props.label} />
-      <div className="relative">
+
+      <div
+        className={twMerge(
+          'flex items-center w-full bg-white rounded-full ring-1 ring-gray-300 focus-within:ring-2 focus-within:ring-blue-600 px-4 py-2.5',
+          props.inputClasses
+        )}
+      >
+        <div className="text-slate-500 mr-2">
+          <FiUnlock size={18} />
+        </div>
+
         <input
           type={isPasswordVisible ? 'text' : 'password'}
           id={inputTag}
@@ -55,22 +64,19 @@ export default function PasswordInputField(props: PasswordInputFieldProps) {
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
           placeholder={props.placeholder ?? 'Enter password here...'}
-          className={twMerge(
-            'w-full rounded-full bg-white ring-1 ring-transparent py-2.5 pl-12 pr-5 text-sm font-medium text-slate-800 placeholder:text-xs placeholder:font-light placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-600 md:py-3',
-            props.inputClasses
-          )}
+          disabled={props.isDisabled}
+          className="flex-1 bg-transparent text-sm font-medium text-slate-800 placeholder:text-xs placeholder:text-slate-400 outline-none"
         />
-        <div className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-800">
-          <FiUnlock />
-        </div>
+
         <button
           type="button"
-          className="absolute right-5 top-1/2 -translate-y-1/2 text-slate-500"
+          className="text-slate-500 ml-2 focus:outline-none"
           onClick={() => setPasswordVisible(!isPasswordVisible)}
         >
-          {isPasswordVisible ? <FiEyeOff /> : <FiEye />}
+          {isPasswordVisible ? <FiEyeOff size={18} /> : <FiEye size={18} />}
         </button>
       </div>
+
       {props.validationSchema && !!text && !isFocused && (
         <span className="pl-4 text-xs font-normal italic text-red-600">{errorMessage}</span>
       )}
