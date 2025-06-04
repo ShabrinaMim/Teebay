@@ -1,0 +1,49 @@
+version: '3'
+
+services:
+  # PostgreSQL Database
+  teebay-postgres:
+    image: postgres:latest
+    container_name: teebay-postgres
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_USER: postgres
+      POSTGRES_DB: teebay
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Backend API
+  teebay-backend:
+    build: ./backend
+    container_name: teebay-backend
+    ports:
+      - '4000:4000'
+      - '5555:5555'
+    depends_on:
+      teebay-postgres:
+        condition: service_healthy
+    environment:
+      - HTTP_PORT=4000
+      - JWT_SECRET=teebay-super-secret-key-2024
+      - DATABASE_URL=postgresql://postgres:password@teebay-postgres:5432/teebay
+
+  # Frontend Web App  
+  teebay-frontend:
+    build: ./frontend
+    container_name: teebay-frontend
+    ports:
+      - '3000:3000'
+    depends_on:
+      - teebay-backend
+    env_file:
+      - ./frontend/.env
+
+volumes:
+  postgres_data:
